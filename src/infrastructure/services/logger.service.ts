@@ -4,7 +4,7 @@ import DateTimeProvider from './dateTime.service'
 import { ILoggerService } from '@/core/application/interfaces/logger.interface'
 
 export default class LoggerService implements ILoggerService {
-  private readonly enabledLogger: boolean = process.env.REACT_APP_ENABLE_LOGGER === 'true'
+  private readonly enabledLogger: boolean = import.meta.env.REACT_APP_ENABLE_LOGGER === 'true'
 
   debug(...params: any[]) {
     if (this.enabledLogger)

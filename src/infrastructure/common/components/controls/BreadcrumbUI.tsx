@@ -1,5 +1,6 @@
 import { Breadcrumb } from 'antd'
-import { _t } from 'src/infrastructure/utils/helpers'
+
+import { _t } from '@/infrastructure/utils/helpers'
 
 interface IBreadcrumb {
   link?: string

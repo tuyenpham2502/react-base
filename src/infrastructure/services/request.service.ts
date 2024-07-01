@@ -19,8 +19,7 @@ import { acceptFile } from '@/infrastructure/utils/helpers'
 
 export default class RequestService implements IRequestService {
   private readonly loggerService = new LoggerService()
-  private readonly baseURL = `${process.env.REACT_APP_API_URL}`
-
+  private readonly baseURL = `${import.meta.env.VITE_APP_API_URL}`
   private readonly cookiesStorageService = new CookiesStorageService()
   private readonly errorCancel: FailureResponse = {
     message: 'cancel token',
@@ -88,6 +87,7 @@ export default class RequestService implements IRequestService {
             .join('&')
         : ''
       const _url = `${this.baseURL}/${endpoint}${_params === '' ? '' : '?' + _params}`
+      await setRecoilStateAsync(LoadingState, { isLoading: true, uri: _url })
       return this.processRequest(
         await axiosInstance.get(_url, {
           ...this.getOptions(),
@@ -117,7 +117,6 @@ export default class RequestService implements IRequestService {
     cancellationToken?: CancelToken,
     params?: any
   ): Promise<RequestResponse> {
-    //const setIsLoading = useSetRecoilState(LoadingState);
     try {
       const _params = params
         ? Object.keys(params)
@@ -126,7 +125,6 @@ export default class RequestService implements IRequestService {
         : ''
       const _url = `${this.baseURL}/${endpoint}${_params === '' ? '' : '?' + _params}`
       await setRecoilStateAsync(LoadingState, { isLoading: true, uri: _url })
-
       const _requestBody = JSON.stringify(requestBody)
       return this.processRequest(
         await axiosInstance.post(_url, _requestBody, {
@@ -163,6 +161,7 @@ export default class RequestService implements IRequestService {
 
       // const _params = params ? Object.keys(params).map(key => `${key}=${encodeURIComponent(params[key])}`).join("&") : "";
       const _url = `${this.baseURL}/${endpoint}${_params === '' ? '' : '?' + _params}`
+      await setRecoilStateAsync(LoadingState, { isLoading: true, uri: _url })
       return this.processRequest(await axiosInstance.get(_url, { ...option }))
     } catch (e: any) {
       if (isCancel(e)) {

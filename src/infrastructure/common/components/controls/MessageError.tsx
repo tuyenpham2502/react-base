@@ -1,4 +1,4 @@
-import 'src/styles/css/common/input.css'
+import '@/styles/css/common/input.css'
 
 type Props = {
   isError: boolean

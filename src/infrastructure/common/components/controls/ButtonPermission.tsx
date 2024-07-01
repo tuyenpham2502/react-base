@@ -1,4 +1,4 @@
-import { getListRole } from 'src/infrastructure/utils/helpers'
+import { getListRole } from '@/infrastructure/utils/helpers'
 
 export const ButtonPermission = ({ allRoleAction = [], className = '', children }: any) => {
   let roleOfUser = getListRole()

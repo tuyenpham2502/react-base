@@ -1,5 +1,6 @@
 import { Menu } from 'antd'
-import { getListRole } from 'src/infrastructure/utils/helpers'
+
+import { getListRole } from '@/infrastructure/utils/helpers'
 
 export const MenuItemPermission = ({ allRoleAction = [], children, ...props }: any) => {
   let roleOfUser = getListRole()

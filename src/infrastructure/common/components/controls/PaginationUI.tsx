@@ -1,7 +1,8 @@
 import { LeftOutlined, RightOutlined } from '@ant-design/icons'
 import { Button, Pagination, Select } from 'antd'
-import Constants from 'src/core/application/common/constants'
-import { _t } from 'src/infrastructure/utils/helpers'
+
+import Constants from '@/core/application/common/constants'
+import { _t } from '@/infrastructure/utils/helpers'
 
 export const PaginationSearchJira = ({
   total,

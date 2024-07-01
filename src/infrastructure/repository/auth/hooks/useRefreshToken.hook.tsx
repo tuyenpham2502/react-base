@@ -1,17 +1,18 @@
 import jwtDecode from 'jwt-decode'
-import Constants from 'src/core/application/common/constants'
-import { Endpoint } from 'src/core/application/common/endPoint'
-import FailureResponse from 'src/core/application/dto/common/responses/failureResponse'
-import InvalidModelStateResponse from 'src/core/application/dto/common/responses/invalidModelStateResponse'
-import SuccessResponse from 'src/core/application/dto/common/responses/successResponse'
-import { RefreshTokenRequest } from 'src/core/application/dto/identity/auth/requests/RefreshTokenRequest'
-import { CodesMap } from 'src/core/domain/enums/CodesMap'
-import { notifyError } from 'src/infrastructure/common/components/toast/toastMessage'
-import CookiesStorageService from 'src/infrastructure/services/cookiesStorage.service'
-import LoggerService from 'src/infrastructure/services/logger.service'
-import { getListRole, refactorFormDataCommon } from 'src/infrastructure/utils/helpers'
 
 import { AuthManagementService } from '../services/auth.service'
+
+import Constants from '@/core/application/common/constants'
+import { Endpoint } from '@/core/application/common/endPoint'
+import FailureResponse from '@/core/application/dto/common/responses/failureResponse'
+import InvalidModelStateResponse from '@/core/application/dto/common/responses/invalidModelStateResponse'
+import SuccessResponse from '@/core/application/dto/common/responses/successResponse'
+import { RefreshTokenRequest } from '@/core/application/dto/identity/auth/requests/RefreshTokenRequest'
+import { CodesMap } from '@/core/domain/enums/CodesMap'
+import { notifyError } from '@/infrastructure/common/components/toast/toastMessage'
+import CookiesStorageService from '@/infrastructure/services/cookiesStorage.service'
+import LoggerService from '@/infrastructure/services/logger.service'
+import { getListRole, refactorFormDataCommon } from '@/infrastructure/utils/helpers'
 
 export const refreshTokenAsync = async (params: RefreshTokenRequest) => {
   const loggerService = new LoggerService()
