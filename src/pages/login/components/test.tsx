@@ -21,7 +21,7 @@ const Test = () => {
     )
   }
   useEffect(() => {
-    handleTest()
+    // handleTest()
   }, [])
   return (
     <div>
