@@ -1,4 +1,4 @@
-import { ILocalStorageService } from 'src/core/application/interfaces/localStorage.interface';
+import { ILocalStorageService } from '@/core/application/interfaces/localStorage.interface';
 
 export default class LocalStorageService implements ILocalStorageService {
     readStorage(key: string): any {

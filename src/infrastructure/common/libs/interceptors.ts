@@ -1,10 +1,10 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
-import { RefreshTokenRequest } from "src/core/application/dto/identity/auth/requests/RefreshTokenRequest";
-import { refreshTokenAsync } from "src/infrastructure/repository/auth/hooks/useRefreshToken.hook";
-import LoggerService from "src/infrastructure/services/logger.service";
+import { RefreshTokenRequest } from "@/core/application/dto/identity/auth/requests/RefreshTokenRequest";
+import { refreshTokenAsync } from "@/infrastructure/repository/auth/hooks/useRefreshToken.hook";
+import LoggerService from "@/infrastructure/services/logger.service";
 import jwtDecode from 'jwt-decode';
-import LocalStorageService from "src/infrastructure/services/localStorage.service";
-import Constants from "src/core/application/common/constants";
+import LocalStorageService from "@/infrastructure/services/localStorage.service";
+import Constants from "@/core/application/common/constants";
 import axiosRetry from "axios-retry";
 
 // Request Interceptor
@@ -16,7 +16,7 @@ let requests: any = [];
 const onRequest = (config: InternalAxiosRequestConfig | any): InternalAxiosRequestConfig => {
     let localStorageService = new LocalStorageService();
 
-    let storage = localStorageService.readStorage(Constants.LocalStorap0: RefreshTokenRequestp0: RefreshTokenRequestge.ApiToken);
+    let storage: any = localStorageService.readStorage(Constants.API_TOKEN_STORAGE);
     // Set Headers Here
     // Check Authentication Here
     // Set Loading Start Here
@@ -31,13 +31,13 @@ const onRequest = (config: InternalAxiosRequestConfig | any): InternalAxiosReque
 };
 
 const onResponse = (response: AxiosResponse): AxiosResponse => {
-  
+
     // Set Loading End Here
     // Handle Response Data Here
     // Error Handling When Return Success with Error Code Here
     // loggerService.trace(`ðŸš€ [API] ${method?.toUpperCase()} ${url} | Response ${status}`);
 
- 
+
     return response;
 };
 
@@ -114,11 +114,11 @@ const onErrorResponse = async (error: AxiosError | Error | any): Promise<AxiosEr
                                 requests = [];
                                 return axiosInstance(originalRequest);
                             }
-                            
+
                         } else {
 
                             return new Promise((resolve) => {
-                                requests.push((token:string) => {
+                                requests.push((token: string) => {
                                     if (originalRequest.headers) {
                                         originalRequest.headers.Authorization = `Bearer ${token}`;
                                     }
@@ -135,7 +135,7 @@ const onErrorResponse = async (error: AxiosError | Error | any): Promise<AxiosEr
                     }
 
                     return Promise.reject(_error);
-                } 
+                }
                 finally {
                     isRefreshing = false;
                 }

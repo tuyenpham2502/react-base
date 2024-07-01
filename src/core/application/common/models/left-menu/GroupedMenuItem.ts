@@ -1,4 +1,4 @@
-import MenuItem from "src/core/application/common/models/left-menu/MenuItem";
+import MenuItem from "@/core/application/common/models/left-menu/MenuItem";
 
 export default class GroupedMenuItem {
 

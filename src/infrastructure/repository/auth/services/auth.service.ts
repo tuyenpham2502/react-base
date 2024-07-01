@@ -1,15 +1,15 @@
 import { CancelToken } from 'axios';
-import NetworkException from 'src/core/application/common/exceptions/networkException';
-import FailureResponse from 'src/core/application/dto/common/responses/failureResponse';
-import InvalidModelStateResponse from 'src/core/application/dto/common/responses/invalidModelStateResponse';
-import { RequestResponse } from 'src/core/application/dto/common/responses/requestResponse';
-import SuccessResponse from 'src/core/application/dto/common/responses/successResponse';
-import { LoginRequest } from 'src/core/application/dto/identity/auth/requests/LoginRequest';
-import { IAuthManagementService } from 'src/core/application/interfaces/auth.interface';
-import LoggerService from 'src/infrastructure/services/logger.service';
-import RequestService from 'src/infrastructure/services/request.service';
-import { RefreshTokenRequest } from 'src/core/application/dto/identity/auth/requests/RefreshTokenRequest';
-import { LogoutRequest } from 'src/core/application/dto/identity/auth/requests/LogoutRequest';
+import NetworkException from '@/core/application/common/exceptions/networkException';
+import FailureResponse from '@/core/application/dto/common/responses/failureResponse';
+import InvalidModelStateResponse from '@/core/application/dto/common/responses/invalidModelStateResponse';
+import { RequestResponse } from '@/core/application/dto/common/responses/requestResponse';
+import SuccessResponse from '@/core/application/dto/common/responses/successResponse';
+import { LoginRequest } from '@/core/application/dto/identity/auth/requests/LoginRequest';
+import { IAuthManagementService } from '@/core/application/interfaces/auth.interface';
+import LoggerService from '@/infrastructure/services/logger.service';
+import RequestService from '@/infrastructure/services/request.service';
+import { RefreshTokenRequest } from '@/core/application/dto/identity/auth/requests/RefreshTokenRequest';
+import { LogoutRequest } from '@/core/application/dto/identity/auth/requests/LogoutRequest';
 
 export class AuthManagementService implements IAuthManagementService {
     private readonly loggerService = new LoggerService();

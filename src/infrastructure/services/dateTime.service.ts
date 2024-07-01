@@ -1,6 +1,6 @@
-import Constants from 'src/core/application/common/constants';
+import Constants from '@/core/application/common/constants';
 import moment from 'moment';
-import { IDateTimeService } from 'src/core/application/interfaces/dateTime.interface';
+import { IDateTimeService } from '@/core/application/interfaces/dateTime.interface';
 
 export default class DateTimeService implements IDateTimeService {
     currentDateTime(format: string = Constants.DateTime.DateTimeFormat) {

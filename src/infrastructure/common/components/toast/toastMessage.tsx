@@ -1,5 +1,5 @@
 import { ToastContent, toast } from "react-toastify";
-import Constants from "src/core/application/common/constants";
+import Constants from "@/core/application/common/constants";
 /**
  * Show toast message, if you leave the message as null or empty, it will show title only
  * @param _translator

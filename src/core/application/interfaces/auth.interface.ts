@@ -1,8 +1,8 @@
-import { RequestResponse } from 'src/core/application/dto/common/responses/requestResponse';
-import { LoginRequest } from 'src/core/application/dto/identity/auth/requests/LoginRequest';
+import { RequestResponse } from '@/core/application/dto/common/responses/requestResponse';
+import { LoginRequest } from '@/core/application/dto/identity/auth/requests/LoginRequest';
 import { CancelToken } from 'axios';
-import { RefreshTokenRequest } from 'src/core/application/dto/identity/auth/requests/RefreshTokenRequest';
-import { LogoutRequest } from 'src/core/application/dto/identity/auth/requests/LogoutRequest';
+import { RefreshTokenRequest } from '@/core/application/dto/identity/auth/requests/RefreshTokenRequest';
+import { LogoutRequest } from '@/core/application/dto/identity/auth/requests/LogoutRequest';
 
 export interface IAuthManagementService {
     /**

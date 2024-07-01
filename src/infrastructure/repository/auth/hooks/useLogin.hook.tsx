@@ -1,14 +1,14 @@
-import { LoginRequest } from 'src/core/application/dto/identity/auth/requests/LoginRequest';
-import LoggerService from 'src/infrastructure/services/logger.service';
-import { AuthManagementService } from 'src/infrastructure/repository/auth/services/auth.service';
-import { Endpoint } from 'src/core/application/common/endPoint';
-import { refactorFormDataCommon } from 'src/infrastructure/utils/helpers';
-import { useCancelToken } from 'src/infrastructure/common/libs/hooks/canceToken.hook';
-import SuccessResponse from 'src/core/application/dto/common/responses/successResponse';
-import { notifyError } from 'src/infrastructure/common/components/toast/toastMessage';
-import FailureResponse from 'src/core/application/dto/common/responses/failureResponse';
-import InvalidModelStateResponse from 'src/core/application/dto/common/responses/invalidModelStateResponse';
-import { CodesMap } from 'src/core/domain/enums/CodesMap';
+import { LoginRequest } from '@/core/application/dto/identity/auth/requests/LoginRequest';
+import LoggerService from '@/infrastructure/services/logger.service';
+import { AuthManagementService } from '@/infrastructure/repository/auth/services/auth.service';
+import { Endpoint } from '@/core/application/common/endPoint';
+import { refactorFormDataCommon } from '@/infrastructure/utils/helpers';
+import { useCancelToken } from '@/infrastructure/common/libs/hooks/canceToken.hook';
+import SuccessResponse from '@/core/application/dto/common/responses/successResponse';
+import { notifyError } from '@/infrastructure/common/components/toast/toastMessage';
+import FailureResponse from '@/core/application/dto/common/responses/failureResponse';
+import InvalidModelStateResponse from '@/core/application/dto/common/responses/invalidModelStateResponse';
+import { CodesMap } from '@/core/domain/enums/CodesMap';
 
 export const useLoginHook = () => {
     const { newCancelToken } = useCancelToken();

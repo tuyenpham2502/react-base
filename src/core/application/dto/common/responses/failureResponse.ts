@@ -1,4 +1,4 @@
-import { RequestResponse } from "src/core/application/dto/common/responses/requestResponse";
+import { RequestResponse } from "@/core/application/dto/common/responses/requestResponse";
 
 export default class FailureResponse extends RequestResponse {
     status: number = 202;

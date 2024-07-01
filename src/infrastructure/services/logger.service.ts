@@ -1,4 +1,4 @@
-import { ILoggerService } from 'src/core/application/interfaces/logger.interface';
+import { ILoggerService } from '@/core/application/interfaces/logger.interface';
 import DateTimeProvider from './dateTime.service';
 
 export default class LoggerService implements ILoggerService {

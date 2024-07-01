@@ -1,15 +1,16 @@
 import moment from "moment";
 import { ToastPosition } from "react-toastify";
-import { MenuKeys } from "src/core/domain/enums/MenuKeys";
+import { MenuKeys } from "@/core/domain/enums/MenuKeys";
 import { MenuTheme } from "antd";
-import Menu from "src/core/application/common/models/left-menu/Menu";
-import MenuItem from "src/core/application/common/models/left-menu/MenuItem";
+import Menu from "@/core/application/common/models/left-menu/Menu";
+import MenuItem from "@/core/application/common/models/left-menu/MenuItem";
 import { PieChartOutlined } from "@ant-design/icons";
-import { RoleId } from "src/core/domain/enums/Role";
+import { RoleId } from "@/core/domain/enums/Role";
 export default class Constants {
     //static API_BASE_URL = 'http://192.168.100.10:12704';
     //static API_BASE_URL = 'https://localhost:12704';
     static API_TOKEN_STORAGE: string = "API_TOKEN";
+    static API_ROLE_STORAGE: string = 'API_ROLE';
 
     static VERIFIED = "Đã xác thực";
     static NOT_VERIFIED = "Chưa xác thực";
@@ -25,7 +26,7 @@ export default class Constants {
     static LIST_DATA_TRANSLATE_STORAGE: string = "LIST_DATA_TRANSLATE";
 
 
-    static URL_JIRA = `${process.env.REACT_APP_JIRA_URL}`;
+    // static URL_JIRA = `${process.env.REACT_APP_JIRA_URL}`;
     static RoleConfig = class {
         static Admin = {
             value: "Admin",

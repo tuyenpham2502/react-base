@@ -1,18 +1,18 @@
-import { LoadingState } from 'src/core/application/common/atoms/global/loadingState';
-import { IRequestService } from 'src/core/application/interfaces/request.interface';
+import { LoadingState } from '@/core/application/common/atoms/global/loadingState';
+import { IRequestService } from '@/core/application/interfaces/request.interface';
 import { AxiosResponse, CancelToken, isCancel } from 'axios';
 import LoggerService from './logger.service';
-import SuccessResponse from 'src/core/application/dto/common/responses/successResponse';
-import FailureResponse from 'src/core/application/dto/common/responses/failureResponse';
-import InvalidModelStateResponse from 'src/core/application/dto/common/responses/invalidModelStateResponse';
-import NetworkException from 'src/core/application/common/exceptions/networkException';
-import { setRecoilStateAsync } from 'src/infrastructure/common/libs/recoil-outside/recoil.service';
-import { RequestResponse } from 'src/core/application/dto/common/responses/requestResponse';
-import { CodesMap } from 'src/core/domain/enums/CodesMap';
-import axiosInstance from 'src/infrastructure/common/libs/interceptors';
-import { acceptFile } from 'src/infrastructure/utils/helpers';
-import Constants from 'src/core/application/common/constants';
-import CookiesStorageService from 'src/infrastructure/services/cookiesStorage.service';
+import SuccessResponse from '@/core/application/dto/common/responses/successResponse';
+import FailureResponse from '@/core/application/dto/common/responses/failureResponse';
+import InvalidModelStateResponse from '@/core/application/dto/common/responses/invalidModelStateResponse';
+import NetworkException from '@/core/application/common/exceptions/networkException';
+import { setRecoilStateAsync } from '@/infrastructure/common/libs/recoil-outside/recoil.service';
+import { RequestResponse } from '@/core/application/dto/common/responses/requestResponse';
+import { CodesMap } from '@/core/domain/enums/CodesMap';
+import axiosInstance from '@/infrastructure/common/libs/interceptors';
+import { acceptFile } from '@/infrastructure/utils/helpers';
+import Constants from '@/core/application/common/constants';
+import CookiesStorageService from '@/infrastructure/services/cookiesStorage.service';
 
 export default class RequestService implements IRequestService {
     private readonly loggerService = new LoggerService();

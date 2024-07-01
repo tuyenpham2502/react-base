@@ -1,4 +1,4 @@
-import { ICookiesStorageService } from 'src/core/application/interfaces/cookiesStorage.interface';
+import { ICookiesStorageService } from '@/core/application/interfaces/cookiesStorage.interface';
 import Cookies from 'js-cookie';
 export default class CookiesStorageService implements ICookiesStorageService {
     readStorage(key: string) {
