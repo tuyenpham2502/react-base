@@ -1,5 +1,5 @@
-import { useRef, useEffect, useCallback } from 'react';
-import axios from 'axios';
+import axios from 'axios'
+import { useRef, useEffect, useCallback } from 'react'
 
 /**
  * When a component unmounts, we need to cancel any potentially
@@ -11,20 +11,20 @@ import axios from 'axios';
  * isCancel - used to check if error returned in response is a cancel token error.
  */
 export const useCancelToken = () => {
-    const axiosSource: any = useRef(null);
+  const axiosSource: any = useRef(null)
 
-    const newCancelToken = useCallback(() => {
-        let CancelToken = axios.CancelToken;
-        axiosSource.current = CancelToken.source();
-        return axiosSource.current.token;
-    }, []);
+  const newCancelToken = useCallback(() => {
+    let CancelToken = axios.CancelToken
+    axiosSource.current = CancelToken.source()
+    return axiosSource.current.token
+  }, [])
 
-    useEffect(
-        () => () => {
-            if (axiosSource.current) axiosSource.current.cancel();
-        },
-        [],
-    );
+  useEffect(
+    () => () => {
+      if (axiosSource.current) axiosSource.current.cancel()
+    },
+    []
+  )
 
-    return { newCancelToken };
-};
+  return { newCancelToken }
+}
