@@ -21,7 +21,6 @@ const LoginPage = () => {
     )
   }
   useEffect(() => {
-    console.log('login page')
     handleLogin()
   }, [])
   return (

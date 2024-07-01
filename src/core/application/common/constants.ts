@@ -79,7 +79,7 @@ export default class Constants {
   static AppTheme: MenuTheme = 'light'
   static MenuConfigs = class {
     static DashboardMenu = 'dashboard'
-    static MainMenu = new Menu(Constants.AppTheme, 'main-menu', [MenuKeys.Account], 'inline', [
+    static MainMenu = new Menu('light', 'main-menu', [MenuKeys.Account], 'inline', [
       new MenuItem(
         [],
         MenuKeys.Dashboard,
