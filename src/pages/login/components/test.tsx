@@ -4,23 +4,10 @@ import { useEffect } from 'react'
 import { Endpoint } from '@/core/application/common/endPoint'
 import { useApiRequestHook } from '@/infrastructure/common/libs/hooks/useApiRequest.hook'
 import { AuthManagementService } from '@/infrastructure/repository/auth/services/auth.service'
-import Test from './components/test'
 
-const LoginPage = () => {
+const Test = () => {
   const [request] = useApiRequestHook()
 
-  const handleLogin = () => {
-    request(
-      new AuthManagementService().loginAsync,
-      Endpoint.Auth.Login,
-      {
-        email: '',
-        password: '',
-      },
-      () => {},
-      () => {}
-    )
-  }
   function handleTest() {
     request(
       new AuthManagementService().logoutAsync,
@@ -29,26 +16,25 @@ const LoginPage = () => {
         email: '',
         password: '',
       },
-      () => { },
-      () => { }
+      () => {},
+      () => {}
     )
   }
   useEffect(() => {
-    handleLogin()
+    handleTest()
   }, [])
   return (
     <div>
       <Button
         onClick={() => {
-          handleLogin()
+          handleTest()
         }}
       >
         Login
       </Button>
-      <Test />
       <h1>Login Page</h1>
     </div>
   )
 }
 
-export default LoginPage
+export default Test

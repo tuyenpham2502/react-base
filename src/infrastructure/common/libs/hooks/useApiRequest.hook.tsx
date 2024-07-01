@@ -25,7 +25,6 @@ export const useApiRequestHook = () => {
 
     isProcessing = false
   }
-
   async function queueRequest(
     serviceInstance: any,
     endpoint: string,
