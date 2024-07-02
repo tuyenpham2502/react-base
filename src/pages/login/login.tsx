@@ -1,55 +1,61 @@
-import { Button } from 'antd'
 import { useEffect } from 'react'
 
 import Test from './components/test'
 
-import { Endpoint } from '@/core/application/common/endPoint'
-import { useApiRequestHook } from '@/infrastructure/common/libs/hooks/useApiRequest.hook'
-import { AuthManagementService } from '@/infrastructure/repository/auth/services/auth.service'
+import { useCancelToken } from '@/infrastructure/common/libs/hooks/cancelToken.hook'
+import { useLoginHook } from '@/infrastructure/repository/auth/hooks/useLogin.hook'
+import { useLogoutHook } from '@/infrastructure/repository/auth/hooks/useLogout.hook'
 
 const LoginPage = () => {
-  const [request] = useApiRequestHook()
+  useCancelToken()
+
+  const [requestLogin] = useLoginHook()
+  const [requestLogout] = useLogoutHook()
 
   const handleLogin = () => {
-    request(
-      new AuthManagementService().loginAsync,
-      Endpoint.Auth.Login,
+    requestLogin(
       {
         email: '',
         password: '',
       },
       () => {
-        handleTest()
+        // handleTest()
       },
       () => {
-        handleTest()
+        // handleTest()
       }
     )
   }
   function handleTest() {
-    request(
-      new AuthManagementService().logoutAsync,
-      Endpoint.Auth.Logout,
+    requestLogout(
       {
         email: '',
         password: '',
       },
-      () => {},
-      () => {}
+      () => {
+        // handleTest()
+      },
+      () => {
+        // handleTest()
+      }
     )
   }
   useEffect(() => {
     handleLogin()
+    handleTest()
   }, [])
+  useEffect(() => {}, [])
+
   return (
     <div>
-      <Button
+      {/* <Button
         onClick={() => {
           handleLogin()
+          handleTest()
         }}
       >
         Login
-      </Button>
+      </Button> */}
       <Test />
       <h1>Login Page</h1>
     </div>

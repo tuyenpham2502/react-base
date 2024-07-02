@@ -15,7 +15,7 @@ import { CodesMap } from '@/core/domain/enums/CodesMap'
 import axiosInstance from '@/infrastructure/common/libs/interceptors'
 import { setRecoilStateAsync } from '@/infrastructure/common/libs/recoil-outside/recoil.service'
 import CookiesStorageService from '@/infrastructure/services/cookiesStorage.service'
-import { acceptFile } from '@/infrastructure/utils/helpers'
+import { acceptFile } from '@/infrastructure/utils/files'
 
 export default class RequestService implements IRequestService {
   private readonly loggerService = new LoggerService()
@@ -124,7 +124,7 @@ export default class RequestService implements IRequestService {
             .join('&')
         : ''
       const _url = `${this.baseURL}/${endpoint}${_params === '' ? '' : '?' + _params}`
-      await setRecoilStateAsync(LoadingState, { isLoading: true, uri: _url })
+      // await setRecoilStateAsync(LoadingState, { isLoading: true, uri: _url })
       const _requestBody = JSON.stringify(requestBody)
       return this.processRequest(
         await axiosInstance.post(_url, _requestBody, {
@@ -144,9 +144,10 @@ export default class RequestService implements IRequestService {
         ...e,
         message: e.response?.data?.message || e.message,
       })
-    } finally {
-      await setRecoilStateAsync(LoadingState, { isLoading: false, uri: '' })
     }
+    // finally {
+    //   await setRecoilStateAsync(LoadingState, { isLoading: false, uri: '' })
+    // }
   }
 
   async makeGetFileRequestAsync(endpoint: string, params: any): Promise<RequestResponse> {

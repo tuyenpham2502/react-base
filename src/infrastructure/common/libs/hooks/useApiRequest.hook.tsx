@@ -1,14 +1,17 @@
+import { CancelToken } from 'axios'
+
+import { setRecoilStateAsync } from '../recoil-outside/recoil.service'
+
+import { LoadingState } from '@/core/application/common/atoms/global/loadingState'
 import FailureResponse from '@/core/application/dto/common/responses/failureResponse'
 import InvalidModelStateResponse from '@/core/application/dto/common/responses/invalidModelStateResponse'
 import SuccessResponse from '@/core/application/dto/common/responses/successResponse'
 import { CodesMap } from '@/core/domain/enums/CodesMap'
 import { notifyError } from '@/infrastructure/common/components/toast/toastMessage'
-import { useCancelToken } from '@/infrastructure/common/libs/hooks/cancelToken.hook'
 import LoggerService from '@/infrastructure/services/logger.service'
 import { refactorFormDataCommon } from '@/infrastructure/utils/helpers'
 
 export const useApiRequestHook = () => {
-  const { newCancelToken } = useCancelToken()
   const loggerService = new LoggerService()
 
   let requestQueue: (() => Promise<any>)[] = []
@@ -22,10 +25,11 @@ export const useApiRequestHook = () => {
       const nextRequest = requestQueue.shift()
       if (nextRequest) await nextRequest()
     }
-
+    await setRecoilStateAsync(LoadingState, { isLoading: false, uri: '' })
     isProcessing = false
   }
   async function queueRequest(
+    newCancelToken: CancelToken,
     serviceInstance: any,
     endpoint: string,
     params: any,
@@ -36,7 +40,7 @@ export const useApiRequestHook = () => {
       const response = await serviceInstance(
         endpoint,
         refactorFormDataCommon(params),
-        newCancelToken()
+        newCancelToken
       )
 
       if ((response as FailureResponse)?.code !== CodesMap.CANCEL_TOKEN) {
@@ -87,6 +91,7 @@ export const useApiRequestHook = () => {
     }
 
     requestQueue.push(queuedRequest)
+    await setRecoilStateAsync(LoadingState, { isLoading: true, uri: endpoint })
     processQueue()
   }
 

@@ -1,6 +1,6 @@
 import Result from 'antd/lib/result'
 
-import { _t } from '@/infrastructure/utils/helpers'
+import { _t } from '@/infrastructure/utils/translation'
 
 export const PermissionsPage = () => {
   return (

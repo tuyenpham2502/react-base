@@ -3,15 +3,15 @@ import { useCancelToken } from '@/infrastructure/common/libs/hooks/cancelToken.h
 import { useApiRequestHook } from '@/infrastructure/common/libs/hooks/useApiRequest.hook'
 import { AuthManagementService } from '@/infrastructure/repository/auth/services/auth.service'
 
-export const useLoginHook = () => {
+export const useLogoutHook = () => {
   const { newCancelToken } = useCancelToken()
   const [requestCommon] = useApiRequestHook()
 
   async function request(params: any, onSuccess: (res: any) => void, onError: () => void) {
     await requestCommon(
       newCancelToken(),
-      new AuthManagementService().loginAsync,
-      Endpoint.Auth.Login,
+      new AuthManagementService().logoutAsync,
+      Endpoint.Auth.Logout,
       params,
       onSuccess,
       onError

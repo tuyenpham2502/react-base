@@ -1,27 +1,27 @@
 import { Button } from 'antd'
 import { useEffect } from 'react'
 
-import { Endpoint } from '@/core/application/common/endPoint'
-import { useApiRequestHook } from '@/infrastructure/common/libs/hooks/useApiRequest.hook'
-import { AuthManagementService } from '@/infrastructure/repository/auth/services/auth.service'
+import { useLogoutHook } from '@/infrastructure/repository/auth/hooks/useLogout.hook'
 
 const Test = () => {
-  const [request] = useApiRequestHook()
+  const [requestLogout] = useLogoutHook()
 
   function handleTest() {
-    request(
-      new AuthManagementService().logoutAsync,
-      Endpoint.Auth.Logout,
+    requestLogout(
       {
         email: '',
         password: '',
       },
-      () => {},
-      () => {}
+      () => {
+        // handleTest()
+      },
+      () => {
+        // handleTest()
+      }
     )
   }
   useEffect(() => {
-    // handleTest()
+    handleTest()
   }, [])
   return (
     <div>

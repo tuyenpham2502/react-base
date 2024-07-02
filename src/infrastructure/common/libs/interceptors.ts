@@ -4,14 +4,18 @@ import axios, {
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from 'axios'
-import axiosRetry from 'axios-retry'
 import jwtDecode from 'jwt-decode'
 
+import { handleApiResponse } from './apiRequestAsync'
+
 import Constants from '@/core/application/common/constants'
+import { Endpoint } from '@/core/application/common/endPoint'
 import { RefreshTokenRequest } from '@/core/application/dto/identity/auth/requests/RefreshTokenRequest'
-import { refreshTokenAsync } from '@/infrastructure/repository/auth/hooks/useRefreshToken.hook'
+import { AuthManagementService } from '@/infrastructure/repository/auth/services/auth.service'
+import CookiesStorageService from '@/infrastructure/services/cookiesStorage.service'
 import LocalStorageService from '@/infrastructure/services/localStorage.service'
 import LoggerService from '@/infrastructure/services/logger.service'
+import { getListRole } from '@/infrastructure/utils/helpers'
 
 // Request Interceptor
 let loggerService = new LoggerService()
@@ -21,7 +25,6 @@ let requests: any = []
 
 const onRequest = (config: InternalAxiosRequestConfig | any): InternalAxiosRequestConfig => {
   let localStorageService = new LocalStorageService()
-
   let storage: any = localStorageService.readStorage(Constants.API_TOKEN_STORAGE)
   // Set Headers Here
   // Check Authentication Here
@@ -57,19 +60,20 @@ const onResponse = (response: AxiosResponse): AxiosResponse => {
 // let localStorageService = new LocalStorageService();
 // let storage = localStorageService.readStorage(Constants.API_TOKEN_STORAGE);
 
-axiosRetry(axiosInstance, {
-  retries: 3, // number of retries
-  retryDelay: (retryCount) => {
-    return retryCount * 2000 // time interval between retries
-  },
-  retryCondition: (error: any) => {
-    // if retry condition is not specified, by default idempotent requests are retried
-    return error.code === 'ERR_NETWORK'
-    // return error.response?.status === 504 || error.response?.status === 502;
-  },
-})
+// axiosRetry(axiosInstance, {
+//   retries: 3, // number of retries
+//   retryDelay: (retryCount) => {
+//     return retryCount * 2000 // time interval between retries
+//   },
+//   retryCondition: (error: any) => {
+//     // if retry condition is not specified, by default idempotent requests are retried
+//     return error.code === 'ERR_NETWORK'
+//     // return error.response?.status === 504 || error.response?.status === 502;
+//   },
+// })
 
 const onErrorResponse = async (error: AxiosError | Error | any): Promise<AxiosError> => {
+  let cookiesStorageService = new CookiesStorageService()
   if (axiosInstance.isCancel(error)) {
     return Promise.reject(error)
   }
@@ -97,13 +101,40 @@ const onErrorResponse = async (error: AxiosError | Error | any): Promise<AxiosEr
               isRefreshing = true
               let info: any = jwtDecode(token.idToken)
               // refreshTokenRequest = refreshTokenRequest ? refreshTokenRequest :
-              let result = await refreshTokenAsync(
+              //  new RefreshTokenRequest
+              let result = await handleApiResponse(
+                new AuthManagementService().refreshTokenAsync,
+                Endpoint.Auth.RefreshToken,
                 new RefreshTokenRequest({
                   userName: info['cognito:username'],
                   refreshToken: token.refreshToken,
                   recaptchaToken: '',
-                })
+                }),
+                (res: any) => {
+                  if (res?.success) {
+                    let getListRoleToken = getListRole()
+                    let listRoleNewToken: any = jwtDecode(res.access_token)
+                    if (
+                      getListRoleToken &&
+                      getListRoleToken.length &&
+                      listRoleNewToken &&
+                      listRoleNewToken.length &&
+                      getListRoleToken.toString() !== listRoleNewToken.toString()
+                    ) {
+                      cookiesStorageService.setStorage(
+                        Constants.API_TOKEN_STORAGE,
+                        res.access_token
+                      )
+                      result = res || {}
+                    }
+                  } else {
+                    cookiesStorageService.removeStorage(Constants.API_TOKEN_STORAGE)
+                    window.location.href = '/'
+                  }
+                },
+                () => {}
               )
+
               if (result?.idToken) {
                 if (originalRequest.headers) {
                   originalRequest.headers.Authorization = `Bearer ${result.idToken}`
