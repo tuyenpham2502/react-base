@@ -1,3 +1,4 @@
+import { Button } from 'antd'
 import { useEffect } from 'react'
 
 import Test from './components/test'
@@ -23,7 +24,8 @@ const LoginPage = () => {
       },
       () => {
         // handleTest()
-      }
+      },
+      false
     )
   }
   function handleTest() {
@@ -37,7 +39,8 @@ const LoginPage = () => {
       },
       () => {
         // handleTest()
-      }
+      },
+      false
     )
   }
   useEffect(() => {
@@ -48,14 +51,14 @@ const LoginPage = () => {
 
   return (
     <div>
-      {/* <Button
+      <Button
         onClick={() => {
           handleLogin()
           handleTest()
         }}
       >
         Login
-      </Button> */}
+      </Button>
       <Test />
       <h1>Login Page</h1>
     </div>

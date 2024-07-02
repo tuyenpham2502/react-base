@@ -7,14 +7,20 @@ export const useLogoutHook = () => {
   const { newCancelToken } = useCancelToken()
   const [requestCommon] = useApiRequestHook()
 
-  async function request(params: any, onSuccess: (res: any) => void, onError: () => void) {
+  async function request(
+    params: any,
+    onSuccess: (res: any) => void,
+    onError: () => void,
+    isLoading: boolean = true
+  ) {
     await requestCommon(
       newCancelToken(),
       new AuthManagementService().logoutAsync,
       Endpoint.Auth.Logout,
       params,
       onSuccess,
-      onError
+      onError,
+      isLoading
     )
   }
 

@@ -34,7 +34,8 @@ export const useApiRequestHook = () => {
     endpoint: string,
     params: any,
     onSuccess: (res: any) => void,
-    onError: () => void
+    onError: () => void,
+    isLoading: boolean = true
   ) {
     const queuedRequest = async () => {
       const response = await serviceInstance(
@@ -91,7 +92,7 @@ export const useApiRequestHook = () => {
     }
 
     requestQueue.push(queuedRequest)
-    await setRecoilStateAsync(LoadingState, { isLoading: true, uri: endpoint })
+    isLoading && (await setRecoilStateAsync(LoadingState, { isLoading: true, uri: endpoint }))
     processQueue()
   }
 
