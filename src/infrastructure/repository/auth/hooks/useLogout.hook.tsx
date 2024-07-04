@@ -1,5 +1,7 @@
+import { Dispatch, SetStateAction } from 'react'
+
 import { Endpoint } from '@/core/application/common/endPoint'
-import { useCancelToken } from '@/infrastructure/common/libs/hooks/cancelToken.hook'
+import { useCancelToken } from '@/infrastructure/common/libs/axios/cancelToken.hook'
 import { useApiRequestHook } from '@/infrastructure/common/libs/hooks/useApiRequest.hook'
 import { AuthManagementService } from '@/infrastructure/repository/auth/services/auth.service'
 
@@ -11,7 +13,7 @@ export const useLogoutHook = () => {
     params: any,
     onSuccess: (res: any) => void,
     onError: () => void,
-    isLoading: boolean = true
+    setLoading?: Dispatch<SetStateAction<boolean>>
   ) {
     await requestCommon(
       newCancelToken(),
@@ -20,7 +22,7 @@ export const useLogoutHook = () => {
       params,
       onSuccess,
       onError,
-      isLoading
+      setLoading
     )
   }
 

@@ -29,6 +29,12 @@ module.exports = {
         printWidth: 100,
       },
     ],
+    'no-restricted-imports': [
+      'error',
+      {
+        patterns: ['.*'],
+      },
+    ],
     'import/no-unresolved': 'off',
     'import/named': 'off',
     'import/no-cycle': 'off',

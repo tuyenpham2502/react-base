@@ -1,6 +1,5 @@
 import { CancelToken } from 'axios'
-
-import { setRecoilStateAsync } from '../recoil-outside/recoil.service'
+import { Dispatch, SetStateAction } from 'react'
 
 import { LoadingState } from '@/core/application/common/atoms/global/loadingState'
 import FailureResponse from '@/core/application/dto/common/responses/failureResponse'
@@ -8,36 +7,28 @@ import InvalidModelStateResponse from '@/core/application/dto/common/responses/i
 import SuccessResponse from '@/core/application/dto/common/responses/successResponse'
 import { CodesMap } from '@/core/domain/enums/CodesMap'
 import { notifyError } from '@/infrastructure/common/components/toast/toastMessage'
+import { setRecoilStateAsync } from '@/infrastructure/common/libs/recoil-outside/recoil.service'
 import LoggerService from '@/infrastructure/services/logger.service'
 import { refactorFormDataCommon } from '@/infrastructure/utils/helpers'
 
 export const useApiRequestHook = () => {
   const loggerService = new LoggerService()
 
-  let requestQueue: (() => Promise<any>)[] = []
-  let isProcessing = false
-
-  async function processQueue() {
-    if (isProcessing) return
-    isProcessing = true
-
-    while (requestQueue.length > 0) {
-      const nextRequest = requestQueue.shift()
-      if (nextRequest) await nextRequest()
-    }
-    await setRecoilStateAsync(LoadingState, { isLoading: false, uri: '' })
-    isProcessing = false
-  }
-  async function queueRequest(
+  async function makeRequest(
     newCancelToken: CancelToken,
     serviceInstance: any,
     endpoint: string,
     params: any,
     onSuccess: (res: any) => void,
     onError: () => void,
-    isLoading: boolean = true
+    setLoading?: Dispatch<SetStateAction<boolean>>
   ) {
-    const queuedRequest = async () => {
+    try {
+      if (setLoading) {
+        setLoading(true)
+      } else {
+        await setRecoilStateAsync(LoadingState, { isLoading: true, uri: endpoint })
+      }
       const response = await serviceInstance(
         endpoint,
         refactorFormDataCommon(params),
@@ -87,14 +78,17 @@ export const useApiRequestHook = () => {
           }
         }
       }
-
-      processQueue()
+    } catch (error) {
+      notifyError('', 'An error occurred. Please contact the administrator')
+      onError()
+    } finally {
+      if (setLoading) {
+        setLoading(false)
+      } else {
+        await setRecoilStateAsync(LoadingState, { isLoading: false, uri: endpoint })
+      }
     }
-
-    requestQueue.push(queuedRequest)
-    isLoading && (await setRecoilStateAsync(LoadingState, { isLoading: true, uri: endpoint }))
-    processQueue()
   }
 
-  return [queueRequest]
+  return [makeRequest]
 }

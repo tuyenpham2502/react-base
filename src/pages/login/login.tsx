@@ -1,15 +1,10 @@
 import { Button } from 'antd'
 import { useEffect } from 'react'
 
-import Test from './components/test'
-
-import { useCancelToken } from '@/infrastructure/common/libs/hooks/cancelToken.hook'
 import { useLoginHook } from '@/infrastructure/repository/auth/hooks/useLogin.hook'
 import { useLogoutHook } from '@/infrastructure/repository/auth/hooks/useLogout.hook'
 
 const LoginPage = () => {
-  useCancelToken()
-
   const [requestLogin] = useLoginHook()
   const [requestLogout] = useLogoutHook()
 
@@ -25,7 +20,7 @@ const LoginPage = () => {
       () => {
         // handleTest()
       },
-      false
+      () => {}
     )
   }
   function handleTest() {
@@ -40,7 +35,7 @@ const LoginPage = () => {
       () => {
         // handleTest()
       },
-      false
+      () => {}
     )
   }
   useEffect(() => {
@@ -59,7 +54,6 @@ const LoginPage = () => {
       >
         Login
       </Button>
-      <Test />
       <h1>Login Page</h1>
     </div>
   )

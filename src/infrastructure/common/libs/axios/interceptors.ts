@@ -6,16 +6,11 @@ import axios, {
 } from 'axios'
 import jwtDecode from 'jwt-decode'
 
-import { handleApiResponse } from './apiRequestAsync'
-
 import Constants from '@/core/application/common/constants'
-import { Endpoint } from '@/core/application/common/endPoint'
 import { RefreshTokenRequest } from '@/core/application/dto/identity/auth/requests/RefreshTokenRequest'
-import { AuthManagementService } from '@/infrastructure/repository/auth/services/auth.service'
-import CookiesStorageService from '@/infrastructure/services/cookiesStorage.service'
+import { refreshTokenAsync } from '@/infrastructure/repository/auth/hooks/useRefreshToken.hook'
 import LocalStorageService from '@/infrastructure/services/localStorage.service'
 import LoggerService from '@/infrastructure/services/logger.service'
-import { getListRole } from '@/infrastructure/utils/helpers'
 
 // Request Interceptor
 let loggerService = new LoggerService()
@@ -73,7 +68,6 @@ const onResponse = (response: AxiosResponse): AxiosResponse => {
 // })
 
 const onErrorResponse = async (error: AxiosError | Error | any): Promise<AxiosError> => {
-  let cookiesStorageService = new CookiesStorageService()
   if (axiosInstance.isCancel(error)) {
     return Promise.reject(error)
   }
@@ -92,49 +86,22 @@ const onErrorResponse = async (error: AxiosError | Error | any): Promise<AxiosEr
         const originalRequest: any = error.config
         try {
           const localStorageService = new LocalStorageService()
-          let token = localStorageService.readStorage(Constants.API_TOKEN_STORAGE)
+          const token = localStorageService.readStorage(Constants.API_TOKEN_STORAGE)
 
           if (token?.idToken && !originalRequest._retry) {
             originalRequest._retry = true
 
             if (!isRefreshing) {
               isRefreshing = true
-              let info: any = jwtDecode(token.idToken)
+              const info: any = jwtDecode(token.idToken)
               // refreshTokenRequest = refreshTokenRequest ? refreshTokenRequest :
-              //  new RefreshTokenRequest
-              let result = await handleApiResponse(
-                new AuthManagementService().refreshTokenAsync,
-                Endpoint.Auth.RefreshToken,
+              const result = (await refreshTokenAsync(
                 new RefreshTokenRequest({
                   userName: info['cognito:username'],
                   refreshToken: token.refreshToken,
                   recaptchaToken: '',
-                }),
-                (res: any) => {
-                  if (res?.success) {
-                    let getListRoleToken = getListRole()
-                    let listRoleNewToken: any = jwtDecode(res.access_token)
-                    if (
-                      getListRoleToken &&
-                      getListRoleToken.length &&
-                      listRoleNewToken &&
-                      listRoleNewToken.length &&
-                      getListRoleToken.toString() !== listRoleNewToken.toString()
-                    ) {
-                      cookiesStorageService.setStorage(
-                        Constants.API_TOKEN_STORAGE,
-                        res.access_token
-                      )
-                      result = res || {}
-                    }
-                  } else {
-                    cookiesStorageService.removeStorage(Constants.API_TOKEN_STORAGE)
-                    window.location.href = '/'
-                  }
-                },
-                () => {}
-              )
-
+                })
+              )) as { idToken: string } // Add type assertion here
               if (result?.idToken) {
                 if (originalRequest.headers) {
                   originalRequest.headers.Authorization = `Bearer ${result.idToken}`
@@ -145,9 +112,10 @@ const onErrorResponse = async (error: AxiosError | Error | any): Promise<AxiosEr
               }
             } else {
               return new Promise((resolve) => {
-                requests.push((token: string) => {
+                requests.push((newToken: string) => {
+                  // Rename the parameter 'token' to 'newToken'
                   if (originalRequest.headers) {
-                    originalRequest.headers.Authorization = `Bearer ${token}`
+                    originalRequest.headers.Authorization = `Bearer ${newToken}` // Update the reference to the renamed parameter
                   }
                   resolve(axiosInstance(originalRequest))
                 })

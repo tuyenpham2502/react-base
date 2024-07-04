@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { AxiosResponse, CancelToken, isCancel } from 'axios'
 
-import LoggerService from './logger.service'
-
 import { LoadingState } from '@/core/application/common/atoms/global/loadingState'
 import Constants from '@/core/application/common/constants'
 import NetworkException from '@/core/application/common/exceptions/networkException'
@@ -12,9 +10,10 @@ import { RequestResponse } from '@/core/application/dto/common/responses/request
 import SuccessResponse from '@/core/application/dto/common/responses/successResponse'
 import { IRequestService } from '@/core/application/interfaces/request.interface'
 import { CodesMap } from '@/core/domain/enums/CodesMap'
-import axiosInstance from '@/infrastructure/common/libs/interceptors'
+import axiosInstance from '@/infrastructure/common/libs/axios/interceptors'
 import { setRecoilStateAsync } from '@/infrastructure/common/libs/recoil-outside/recoil.service'
 import CookiesStorageService from '@/infrastructure/services/cookiesStorage.service'
+import LoggerService from '@/infrastructure/services/logger.service'
 import { acceptFile } from '@/infrastructure/utils/files'
 
 export default class RequestService implements IRequestService {
@@ -87,7 +86,7 @@ export default class RequestService implements IRequestService {
             .join('&')
         : ''
       const _url = `${this.baseURL}/${endpoint}${_params === '' ? '' : '?' + _params}`
-      await setRecoilStateAsync(LoadingState, { isLoading: true, uri: _url })
+      // await setRecoilStateAsync(LoadingState, { isLoading: true, uri: _url })
       return this.processRequest(
         await axiosInstance.get(_url, {
           ...this.getOptions(),
@@ -106,9 +105,10 @@ export default class RequestService implements IRequestService {
         ...e,
         message: e.response?.data?.message || e.message,
       })
-    } finally {
-      await setRecoilStateAsync(LoadingState, { isLoading: false, uri: '' })
     }
+    // finally {
+    //   await setRecoilStateAsync(LoadingState, { isLoading: false, uri: '' })
+    // }
   }
 
   async makePostRequestAsync(
@@ -162,7 +162,7 @@ export default class RequestService implements IRequestService {
 
       // const _params = params ? Object.keys(params).map(key => `${key}=${encodeURIComponent(params[key])}`).join("&") : "";
       const _url = `${this.baseURL}/${endpoint}${_params === '' ? '' : '?' + _params}`
-      await setRecoilStateAsync(LoadingState, { isLoading: true, uri: _url })
+      // await setRecoilStateAsync(LoadingState, { isLoading: true, uri: _url })
       return this.processRequest(await axiosInstance.get(_url, { ...option }))
     } catch (e: any) {
       if (isCancel(e)) {
@@ -175,9 +175,10 @@ export default class RequestService implements IRequestService {
         ...e,
         message: e.response?.data?.message || e.message,
       })
-    } finally {
-      await setRecoilStateAsync(LoadingState, { isLoading: false, uri: '' })
     }
+    // finally {
+    //   await setRecoilStateAsync(LoadingState, { isLoading: false, uri: '' })
+    // }
   }
 
   async makeUploadRequestAsync(endpoint: string, params: any): Promise<RequestResponse> {
@@ -201,9 +202,10 @@ export default class RequestService implements IRequestService {
 
       // TODO: Need to check this
       //return new FailureResponse(result || e.errors);
-    } finally {
-      await setRecoilStateAsync(LoadingState, { isLoading: false, uri: '' })
     }
+    // finally {
+    //   await setRecoilStateAsync(LoadingState, { isLoading: false, uri: '' })
+    // }
   }
 
   async makePostParamRequestAsync(
@@ -219,7 +221,7 @@ export default class RequestService implements IRequestService {
             .join('&')
         : ''
       const _url = `${this.baseURL}/${endpoint}${_params === '' ? '' : '?' + _params}`
-      await setRecoilStateAsync(LoadingState, { isLoading: true, uri: _url })
+      // await setRecoilStateAsync(LoadingState, { isLoading: true, uri: _url })
 
       // const _params = JSON.stringify(params);
       return this.processRequest(
@@ -240,9 +242,10 @@ export default class RequestService implements IRequestService {
         ...e,
         message: e.response?.data?.message || e.message,
       })
-    } finally {
-      await setRecoilStateAsync(LoadingState, { isLoading: false, uri: '' })
     }
+    // finally {
+    //   await setRecoilStateAsync(LoadingState, { isLoading: false, uri: '' })
+    // }
   }
 
   //TODO:PUT
@@ -260,7 +263,7 @@ export default class RequestService implements IRequestService {
             .join('&')
         : ''
       const _url = `${this.baseURL}/${endpoint}${_params === '' ? '' : '?' + _params}`
-      await setRecoilStateAsync(LoadingState, { isLoading: true, uri: _url })
+      // await setRecoilStateAsync(LoadingState, { isLoading: true, uri: _url })
 
       const _requestBody = JSON.stringify(requestBody)
       return this.processRequest(
@@ -280,9 +283,10 @@ export default class RequestService implements IRequestService {
         ...e,
         message: e.response?.data?.message || e.message,
       })
-    } finally {
-      await setRecoilStateAsync(LoadingState, { isLoading: false, uri: '' })
     }
+    // finally {
+    //   await setRecoilStateAsync(LoadingState, { isLoading: false, uri: '' })
+    // }
   }
   //TODO:DELETE
   makeDeleteRequestAsync(_endpoint: string, _params: object): Promise<RequestResponse> {

@@ -1,7 +1,5 @@
 import jwtDecode from 'jwt-decode'
 
-import { AuthManagementService } from '../services/auth.service'
-
 import Constants from '@/core/application/common/constants'
 import { Endpoint } from '@/core/application/common/endPoint'
 import FailureResponse from '@/core/application/dto/common/responses/failureResponse'
@@ -10,6 +8,7 @@ import SuccessResponse from '@/core/application/dto/common/responses/successResp
 import { RefreshTokenRequest } from '@/core/application/dto/identity/auth/requests/RefreshTokenRequest'
 import { CodesMap } from '@/core/domain/enums/CodesMap'
 import { notifyError } from '@/infrastructure/common/components/toast/toastMessage'
+import { AuthManagementService } from '@/infrastructure/repository/auth/services/auth.service'
 import CookiesStorageService from '@/infrastructure/services/cookiesStorage.service'
 import LoggerService from '@/infrastructure/services/logger.service'
 import { getListRole, refactorFormDataCommon } from '@/infrastructure/utils/helpers'
